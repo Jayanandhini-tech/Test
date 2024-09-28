@@ -1,0 +1,36 @@
+import streamlit as st
+import serial
+
+def start():
+
+    ser = serial.Serial( port='COM4' , baudrate=9600 ,bytesize=serial.EIGHTBITS , parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE)
+    print(ser.is_open)
+    ser.write(b'\x02')
+    ser.write(b'\x03')
+    while True:
+                byte_read=ser.read()
+                if byte_read == b'\x8f': 
+                    ser.write(b'\x02')
+
+                if byte_read == b'\x43':
+                    print('50 Received')
+                    ser.write(b'\x02')
+                    
+                if byte_read == b'\x42':
+                    print('20 Received')
+                    a=int(input(" enter number of 20rs note"))
+                    x=a*20
+                    print("total amount =",x)
+                    ser.write(b'\x02')
+
+                if byte_read == b'\x41':
+                    print('10 Received')
+                    ser.write(b'\x02')
+
+                if byte_read == b'\x41':
+                    print('10 Received')
+                    ser.write(b'\x02')
+
+                ser.close()
+
+start()
